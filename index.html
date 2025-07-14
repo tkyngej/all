@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>全ネット検索レコメンド</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, select, button { width: 100%; margin: 8px 0; padding: 10px; font-size: 16px; }
+    iframe { width: 100%; height: 600px; border: none; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h2>全ネットから探すレコメンド検索</h2>
+
+  <form id="searchForm">
+    <label for="genre">ジャンル</label>
+    <select id="genre">
+      <option value="サプリ">サプリ</option>
+      <option value="映画">映画</option>
+      <option value="漫画">漫画</option>
+      <option value="アニメ">アニメ</option>
+      <option value="小説">小説</option>
+      <option value="飲食店">飲食店</option>
+      <option value="通販">通販</option>
+      <option value="地域イベント">地域イベント</option>
+    </select>
+
+    <label for="subGenre">サブジャンル</label>
+    <select id="subGenre">
+      <option value="">指定なし</option>
+      <option value="脂肪燃焼">脂肪燃焼</option>
+      <option value="自然派">自然派</option>
+      <option value="新作">新作</option>
+      <option value="完結">完結</option>
+    </select>
+
+    <label for="feature">特徴</label>
+    <select id="feature">
+      <option value="">指定なし</option>
+      <option value="英語メニューあり">英語メニューあり</option>
+      <option value="個室あり">個室あり</option>
+      <option value="無添加">無添加</option>
+    </select>
+
+    <label for="preference">好み／嫌い</label>
+    <input type="text" id="preference" placeholder="例：甘いのは苦手、自然派が好き">
+
+    <label for="region">地域（市）</label>
+    <input type="text" id="region" placeholder="例：渋谷区、札幌市など">
+
+    <button type="submit">検索する</button>
+  </form>
+
+  <iframe id="searchResults"></iframe>
+
+  <script>
+    // Google CSE ID（全体検索用に設定されたもの）
+    const GLOBAL_CSE_ID = "a51043424f1564f0c";
+
+    document.getElementById("searchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const genre = document.getElementById("genre").value;
+      const subGenre = document.getElementById("subGenre").value;
+      const feature = document.getElementById("feature").value;
+      const preference = document.getElementById("preference").value;
+      const region = document.getElementById("region").value;
+
+      const query = `${genre} ${subGenre} ${feature} ${preference} ${region}`.trim();
+      const encodedQuery = encodeURIComponent(query);
+
+      const searchURL = `https://cse.google.com/cse?cx=${GLOBAL_CSE_ID}&q=${encodedQuery}`;
+      document.getElementById("searchResults").src = searchURL;
+    });
+  </script>
+
+</body>
+</html>
